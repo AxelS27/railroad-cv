@@ -1,4 +1,4 @@
-# PRD — <Project Name>
+# PRD - <Project Name>
 
 <!-- Keep this file short. It defines WHAT and WHY, never HOW. -->
 

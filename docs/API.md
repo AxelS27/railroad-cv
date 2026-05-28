@@ -43,12 +43,12 @@ GET /api/v1/users/123
 Authorization: Bearer <token>
 ```
 
-**Response — 200**
+**Response - 200**
 ```json
 { "data": { "id": "123", "name": "Ada", "email": "ada@example.com" } }
 ```
 
-**Response — 404**
+**Response - 404**
 ```json
 { "error": { "code": "USER_NOT_FOUND", "message": "No user with id 123" } }
 ```

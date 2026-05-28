@@ -7,7 +7,7 @@
 - No dead code, no commented-out blocks, no `console.log` in committed code.
 
 ## UI Consistency
-- Frontend rendering, performance & design-craft rules: see `docs/FRONTEND.md`. The bar is "professionally designed, human-made" — never AI-generic.
+- Frontend rendering, performance & design-craft rules: see `docs/FRONTEND.md`. The bar is "professionally designed, human-made" - never AI-generic.
 - Use shared UI primitives and design tokens before creating one-off styles.
 - Test responsive behavior at mobile and desktop widths.
 
@@ -20,7 +20,7 @@
 - Validate every external input at the boundary with **Zod** (route handlers) before any logic runs.
 - Never trust client data or expose secrets to the frontend.
 - After `#.gitignore` is renamed to `.gitignore` in a product repo, commit only `.env.example`, not `.env`.
-- Parameterized DB queries only — no string-built SQL.
+- Parameterized DB queries only - no string-built SQL.
 - **Supabase:** enable Row Level Security on every table.
 - **AI models:** call hosted models from `apps/server` only.
 

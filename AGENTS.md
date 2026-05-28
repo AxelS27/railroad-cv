@@ -7,22 +7,22 @@
 
 When sources conflict, follow this order (top wins):
 
-1. **AGENTS.md** (this file) — workflow & rules
-2. **docs/ARCHITECTURE.md** — structure & boundaries
-3. **docs/DECISIONS.md** — locked technical choices
-4. **docs/API.md** — API contracts
+1. **AGENTS.md** (this file) - workflow & rules
+2. **docs/ARCHITECTURE.md** - structure & boundaries
+3. **docs/DECISIONS.md** - locked technical choices
+4. **docs/API.md** - API contracts
 5. Existing code patterns
 6. Your own judgment
 
 Never override a higher source with a lower one without flagging it.
 
-## When to Open Each Doc (don't read preemptively — saves tokens)
+## When to Open Each Doc (don't read preemptively - saves tokens)
 
 | Open this | Only when the task involves |
 |-----------|----------------------------|
 | docs/PRD.md | Scope/feature questions, "should we build X" |
 | docs/ARCHITECTURE.md | Adding folders, cross-package imports, new module |
-| docs/FRONTEND.md | Any apps/web UI work — rendering, data fetching, performance, design/UX |
+| docs/FRONTEND.md | Any apps/web UI work - rendering, data fetching, performance, design/UX |
 | docs/DECISIONS.md | Choosing a lib, DB, pattern (check if already decided) |
 | docs/API.md | Any endpoint work |
 | docs/QUALITY.md | Before marking a task done |
@@ -36,23 +36,23 @@ Rationale lives in `docs/DECISIONS.md`. Don't introduce an alternative to any of
 | Monorepo | pnpm · Turborepo · TypeScript |
 | Frontend | Next.js (App Router) · React · Tailwind CSS · shadcn/ui |
 | Backend | Node.js · Hono · Zod (validation) |
-| Database | Supabase — PostgreSQL |
+| Database | Supabase - PostgreSQL |
 | Auth | Supabase Auth |
 | Storage | Supabase Storage |
 | Deploy | See `docs/DECISIONS.md` ADR-007 |
-| Large AI models | Hugging Face — **only** when the project involves large models |
+| Large AI models | Hugging Face - **only** when the project involves large models |
 
 Stack rules:
 - Shared request/response **contracts are Zod schemas in `packages/types`**; infer TS types from them so web + server can't drift.
-- Supabase: the anon key is public (`NEXT_PUBLIC_*`); the **service-role key is server-only** — never import it into `apps/web`.
-- Large AI models are **never bundled** into the app — call Hugging Face (Inference API / Endpoints) from `apps/server`.
+- Supabase: the anon key is public (`NEXT_PUBLIC_*`); the **service-role key is server-only** - never import it into `apps/web`.
+- Large AI models are **never bundled** into the app - call Hugging Face (Inference API / Endpoints) from `apps/server`.
 - Custom model handoff lives in root `huggingface/`. Put model weights/checkpoints under `huggingface/models/` or exported artifacts under `huggingface/artifacts/`; those files are ignored for normal GitHub pushes.
 
 ## Workflow
 
 1. Confirm which app/package you're touching: `apps/web`, `apps/server`, or `packages/*`.
 2. Match existing patterns in that folder before inventing new ones.
-3. Shared logic goes in `packages/` — never duplicate across apps.
+3. Shared logic goes in `packages/` - never duplicate across apps.
 4. Finish → self-check against `docs/QUALITY.md` Definition of Done.
 5. Made a real architectural choice → append to `docs/DECISIONS.md`.
 
@@ -84,13 +84,13 @@ Keep the public repo looking human-authored.
 
 - **`apps/web`** = frontend only. **`apps/server`** = backend only. No crossing.
 - **`packages/`** = shared, reusable, app-agnostic code:
-  - `packages/ui` — design system / shared components
-  - `packages/types` — shared TypeScript types
-  - `packages/utils` — pure, framework-agnostic helpers
-  - `packages/config` — shared configs (tsconfig, eslint, etc.)
+  - `packages/ui` - design system / shared components
+  - `packages/types` - shared TypeScript types
+  - `packages/utils` - pure, framework-agnostic helpers
+  - `packages/config` - shared configs (tsconfig, eslint, etc.)
 - **`huggingface/`** = optional Hugging Face handoff workspace for model cards, Space files, and upload-ready assets. It is not a web/server/package runtime.
 - **Feature-based**: group by feature, not by file type. A feature owns its components, hooks, services, and types.
-- **Import boundaries**: apps import from `packages/*`. Packages NEVER import from apps. Features never import from sibling features directly — go through a shared layer.
+- **Import boundaries**: apps import from `packages/*`. Packages NEVER import from apps. Features never import from sibling features directly - go through a shared layer.
 
 ## Anti-Overengineering Rules
 
@@ -114,7 +114,7 @@ Keep the public repo looking human-authored.
 - ✅ Match the naming + folder conventions exactly
 - ✅ Update the relevant doc when you change its domain
 - ✅ Ask before introducing a new top-level folder
-- ✅ If `docs/PRD.md` is still a blank template, ask the user for scope before building features — don't invent it
+- ✅ If `docs/PRD.md` is still a blank template, ask the user for scope before building features - don't invent it
 
 ## DON'T
 
@@ -123,4 +123,4 @@ Keep the public repo looking human-authored.
 - ❌ Add a state manager / ORM / heavy lib without a DECISIONS.md entry
 - ❌ Restructure folders without updating ARCHITECTURE.md
 - ❌ Leave `.env` secrets in code or commit `.env`
-- ❌ Read all docs at session start — open them on demand only
+- ❌ Read all docs at session start - open them on demand only

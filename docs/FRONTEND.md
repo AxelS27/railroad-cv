@@ -1,7 +1,7 @@
 # Frontend
 
 > Stack: Next.js (App Router) · React · TypeScript · Tailwind · Supabase.
-> Open this for any `apps/web` work. Goal: ship something that feels **professionally designed and human-made — not a generic AI site** (but still modern and sharp).
+> Open this for any `apps/web` work. Goal: ship something that feels **professionally designed and human-made - not a generic AI site** (but still modern and sharp).
 
 ## Design Craft (read first)
 
@@ -121,7 +121,7 @@ User-facing text is centralized, never hardcoded in components. This keeps copy 
 ## Rendering Strategy
 
 - **Server Components by default.** Reach for `'use client'` only when you actually need interactivity, browser APIs, local state, animation, or realtime.
-- Don't make a whole page client-side for one interactive widget — push the client boundary down to the smallest leaf.
+- Don't make a whole page client-side for one interactive widget - push the client boundary down to the smallest leaf.
 
 ## Data Fetching
 
@@ -148,7 +148,7 @@ Avoid: unnecessary client state, deeply nested providers, excessive re-renders, 
 
 ## States & Responsiveness
 
-- Always design **loading, empty, and error** states — not just the happy path.
+- Always design **loading, empty, and error** states - not just the happy path.
 - Transitions subtle and fast.
 - Responsive at every breakpoint (test mobile → desktop).
 

@@ -22,13 +22,13 @@ Managed with **pnpm workspaces** + **Turborepo**. Run tasks from root via `turbo
 
 Internal packages are consumed **as TypeScript source** (their `exports` point at `src/`), so there's no separate build step. Next.js must list workspace packages it imports in `transpilePackages` (e.g. `['@repo/ui', '@repo/types', '@repo/utils']`).
 
-Frontend rendering, data-fetching, performance, and design-craft rules live in **`docs/FRONTEND.md`** — open it for any `apps/web` work.
+Frontend rendering, data-fetching, performance, and design-craft rules live in **`docs/FRONTEND.md`** - open it for any `apps/web` work.
 
 ## Frontend / Backend Separation
 
 - `apps/web` and `apps/server` are fully independent deployables.
 - They communicate **only** over the API defined in `docs/API.md`.
-- No shared runtime imports between them — shared code goes through `packages/*`.
+- No shared runtime imports between them - shared code goes through `packages/*`.
 
 ## Package Responsibilities
 
@@ -80,7 +80,7 @@ web (Next.js Server/Client Components)
   → Supabase (PostgreSQL · Auth · Storage)
 ```
 
-Request/response shapes are **Zod schemas in `packages/types`**; both apps import them, so frontend and backend can't drift — the server validates with the schema, the client infers its types from it.
+Request/response shapes are **Zod schemas in `packages/types`**; both apps import them, so frontend and backend can't drift - the server validates with the schema, the client infers its types from it.
 
 ## Supabase Clients
 
@@ -92,6 +92,6 @@ Request/response shapes are **Zod schemas in `packages/types`**; both apps impor
 
 Only relevant when a project actually uses large models.
 
-- Models run on **Hugging Face** (Inference API for shared models, Inference Endpoints for dedicated/private ones) — **never** loaded into the Node process or shipped to the browser.
+- Models run on **Hugging Face** (Inference API for shared models, Inference Endpoints for dedicated/private ones) - **never** loaded into the Node process or shipped to the browser.
 - The integration lives in `apps/server/src/services`; the web app calls the server, the server calls Hugging Face. Auth via `HUGGINGFACE_API_KEY` (server-only).
 - Custom model handoff lives in root `huggingface/`. See `huggingface/README.md` for upload notes and artifact handling.
