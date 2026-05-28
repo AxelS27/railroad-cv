@@ -94,5 +94,4 @@ Only relevant when a project actually uses large models.
 
 - Models run on **Hugging Face** (Inference API for shared models, Inference Endpoints for dedicated/private ones) — **never** loaded into the Node process or shipped to the browser.
 - The integration lives in `apps/server/src/services`; the web app calls the server, the server calls Hugging Face. Auth via `HUGGINGFACE_API_KEY` (server-only).
-- Small/cheap inference can stay inline; reach for Hugging Face when the model is large.
-- Custom model handoff lives in root `huggingface/`. Use it for model cards, optional Space files, and upload-ready artifacts. Keep weights/checkpoints in `huggingface/models/` or `huggingface/artifacts/`; those paths are ignored by normal GitHub pushes so large model files do not enter the app repository.
+- Custom model handoff lives in root `huggingface/`. See `huggingface/README.md` for upload notes and artifact handling.

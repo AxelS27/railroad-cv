@@ -8,9 +8,8 @@
 
 ## UI Consistency
 - Frontend rendering, performance & design-craft rules: see `docs/FRONTEND.md`. The bar is "professionally designed, human-made" — never AI-generic.
-- All UI built from `packages/ui` primitives — no one-off styled elements.
-- Use design tokens (spacing, color, radius) — never hardcoded values.
-- Responsive by default; test at mobile + desktop widths.
+- Use shared UI primitives and design tokens before creating one-off styles.
+- Test responsive behavior at mobile and desktop widths.
 
 ## Performance Basics
 - No unnecessary re-renders (memoize where it measurably helps, not preemptively).
@@ -19,11 +18,11 @@
 
 ## Security Basics
 - Validate every external input at the boundary with **Zod** (route handlers) before any logic runs.
-- Never trust client data; never expose secrets to the frontend.
-- `.env` is git-ignored; commit only `.env.example`.
+- Never trust client data or expose secrets to the frontend.
+- After `#.gitignore` is renamed to `.gitignore` in a product repo, commit only `.env.example`, not `.env`.
 - Parameterized DB queries only — no string-built SQL.
-- **Supabase:** enable Row Level Security on every table. The anon key (`NEXT_PUBLIC_*`) may be public; the **service-role key is server-only** and must never reach `apps/web`.
-- **AI models:** call Hugging Face from `apps/server` only; keep `HUGGINGFACE_API_KEY` off the client.
+- **Supabase:** enable Row Level Security on every table.
+- **AI models:** call hosted models from `apps/server` only.
 
 ## Definition of Done
 A task is done when:

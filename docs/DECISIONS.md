@@ -34,7 +34,7 @@
 
 ## ADR-003: Frontend — Next.js (App Router) + React + Tailwind + shadcn/ui
 - Decision:   Next.js App Router on React for `apps/web`; Tailwind CSS for styling; shadcn/ui as the component layer (lives in `packages/ui`).
-- Reason:     First-class Vercel deploy, RSC/SSR out of the box, huge ecosystem; Tailwind + shadcn give an ownable, copy-in design system with no runtime lock-in.
+- Reason:     RSC/SSR out of the box, huge ecosystem; Tailwind + shadcn give an ownable, copy-in design system with no runtime lock-in.
 - Rejected:   Vite SPA (no SSR/routing batteries); component libs like MUI/Chakra (heavier, less ownable than shadcn).
 - Status:     Accepted
 - Date:       2026-05-29

@@ -21,6 +21,6 @@ huggingface/
 
 ## Upload Notes
 
-Keep large files in `models/` or `artifacts/`. They are ignored by this repository's `.gitignore` so the main GitHub repo stays light.
+Keep large files in `models/` or `artifacts/`. The template ignore rules in `#.gitignore` exclude those paths once the file is renamed to `.gitignore` in a product repo.
 
 When a model is ready, upload it through the Hugging Face CLI, Git LFS, or the Hugging Face web UI from this folder.

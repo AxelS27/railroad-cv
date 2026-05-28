@@ -39,7 +39,7 @@ Rationale lives in `docs/DECISIONS.md`. Don't introduce an alternative to any of
 | Database | Supabase — PostgreSQL |
 | Auth | Supabase Auth |
 | Storage | Supabase Storage |
-| Deploy | Vercel (Docker optional) |
+| Deploy | See `docs/DECISIONS.md` ADR-007 |
 | Large AI models | Hugging Face — **only** when the project involves large models |
 
 Stack rules:
@@ -76,7 +76,8 @@ Keep the public repo looking human-authored.
 
 - **Commits:** short and concise, one line, imperative mood. No long bodies, no multi-paragraph messages.
 - **No AI references** in commits, PR text, or history. Never mention Claude/Codex/agents, `.claude`, `.codex`, "generated with", or co-author trailers.
-- **Keep AI scaffolding out of the remote.** These are git-ignored on purpose and must never be pushed: `.claude/`, `.codex/`, `AGENTS.md`, `CLAUDE.md`, `docs/`, `HOW_TO_USE_THIS_TEMPLATE.md`.
+- **Template ignore file:** this template stores ignore rules in `#.gitignore` so the full starter kit can be saved to GitHub. After copying the template into a real product repo, rename it to `.gitignore`.
+- **Keep local tooling out of product repos.** Once `#.gitignore` is renamed, local agent folders such as `.claude/`, `.codex/`, `.cursor/`, and `.windsurf/` stay untracked.
 - **Python:** use **`uv`** for deps / venv / running scripts, never `pip` or raw `venv`.
 
 ## Architecture Discipline

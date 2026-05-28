@@ -1,6 +1,6 @@
 # Frontend
 
-> Stack: Next.js (App Router) · React · TypeScript · Tailwind · Supabase · Vercel.
+> Stack: Next.js (App Router) · React · TypeScript · Tailwind · Supabase.
 > Open this for any `apps/web` work. Goal: ship something that feels **professionally designed and human-made — not a generic AI site** (but still modern and sharp).
 
 ## Design Craft (read first)
@@ -152,6 +152,6 @@ Avoid: unnecessary client state, deeply nested providers, excessive re-renders, 
 - Transitions subtle and fast.
 - Responsive at every breakpoint (test mobile → desktop).
 
-## Deployment Mindset
+## Production Mindset
 
-Build for **stable, scalable, maintainable, production-ready** on Vercel. Not experimental, not overengineered.
+Build for **stable, scalable, maintainable, production-ready** frontend delivery. Not experimental, not overengineered.
