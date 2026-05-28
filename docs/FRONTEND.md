@@ -9,6 +9,8 @@ The default failure mode of AI-built UIs is "generic." Don't ship that. The goal
 
 **Two tests to keep applying:** if a screen could be any AI demo, it is not done. If an element exists only to look "cool", it should not exist. Every visual element needs a reason.
 
+**Target vibe:** a real product company website designed by experienced frontend engineers and product designers. It should feel structured, editorial, balanced, calm, professional, trustworthy, scalable, and production-ready.
+
 ### Forbidden patterns (the AI tells)
 
 Do not use:
@@ -16,22 +18,35 @@ Do not use:
 - Random horizontal dividers or decorative separators with no functional purpose.
 - Emoji as UI/section markers, or excessive uppercase micro-labels.
 - Cinematic or floating decorative text; fake futuristic styling.
+- Decorative dual-colored headlines, split-color phrases, or mixed heading colors without a system.
 - Decorative numbering like [01], [02].
 - Random serif-italic fonts dropped in "for contrast".
 - Untouched shadcn defaults (looks like every other demo).
 - Symmetric filler card grids and centered-everything landing pages.
+- Oversized hero sections, excessive empty space, or layouts where every section is perfectly centered.
+- Floating UI elements, random cards, badges, and panels that do not carry real information.
 - Fake dashboard aesthetics, Dribbble-style visual overload, experimental layouts with no UX purpose.
 - Fade-in-on-everything motion, gratuitous parallax, constantly moving elements.
+- Generic portfolio aesthetics: tiny centered labels, decorative rules, large type paired with thin filler copy, and vague skill cards.
 
 ### Do instead
 
 - **Have an identity.** Commit to a real palette, a deliberate type scale, and a consistent spacing rhythm as design tokens, not Tailwind defaults sprinkled ad-hoc.
 - **Customize components.** shadcn/ui is a starting point, not the look. Tune radius, weight, density, and color so it does not read as "default shadcn."
 - **Keep typography stable.** One or two font families at most. No random font mixing, no decorative or serif-italic-for-aesthetics switches. Build hierarchy with spacing, weight, and size.
-- **Lay out with whitespace.** Let spacing create hierarchy; never add elements just to fill space. Keep layouts structured and predictable. Minimal means intentional, not empty.
+- **Lay out with structure.** Use a proper responsive grid, strong alignment, and clear section flow. Whitespace should create hierarchy; it should not become dead empty space.
+- **Use asymmetry intentionally.** Avoid centering every section. A page can feel balanced while using offset columns, editorial rhythm, and varied section density.
 - **Earn every effect.** Subtle, fast motion that supports usability. No heavy animation libs for a hover, no cinematic transitions. Users should notice smoothness, not the animation.
 - **Respect hierarchy and whitespace.** One clear focal point per screen, intentional alignment, generous spacing. Polish over decoration.
 - **Accessibility is craft.** Real focus states, sufficient contrast, keyboard paths. Pros do this, and it reads as human.
+
+### Layout Checks
+
+- Every section must answer: what is this for, what should the user notice, and what comes next?
+- Cards must contain meaningful information or actions. If a card exists only to fill a grid, remove it.
+- Keep borders, shadows, corner radius, and hover states restrained and consistent.
+- Test mobile and desktop for stable spacing, readable line lengths, and no awkward empty zones.
+- Prefer real product references and mature design systems over AI-generated landing page patterns.
 
 ## Theming & Color
 
@@ -77,6 +92,8 @@ To rebrand: edit the token values in `globals.css`. That is the only file you to
 - **No em dash** in UI copy or content. Use a comma, a period, a plain hyphen, or rephrase. Keep punctuation clean and standard.
 - **Minimize emoji** and skip decorative symbols. Use an emoji only when it carries real meaning, never as decoration or a section marker.
 - Avoid AI-sounding marketing language, fake technical terminology, and meme-style writing. Keep wording concise, natural, and familiar.
+- Avoid generic phrases such as "crafting digital experiences", "building with passion", "clarity and purpose", and "innovative solutions".
+- Do not use placeholder content, fake feature names, or invented labels when normal product language would be clearer.
 
 ## Internationalization (i18n)
 
