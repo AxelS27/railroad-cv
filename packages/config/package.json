@@ -1,0 +1,25 @@
+{
+  "name": "@repo/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./eslint/base": "./eslint/base.js",
+    "./eslint/node": "./eslint/node.js",
+    "./eslint/next": "./eslint/next.js",
+    "./typescript/base.json": "./typescript/base.json",
+    "./typescript/nextjs.json": "./typescript/nextjs.json",
+    "./typescript/node.json": "./typescript/node.json",
+    "./prettier": "./prettier/index.js"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.0.0",
+    "typescript-eslint": "^8.0.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": "^5.4.0"
+  }
+}

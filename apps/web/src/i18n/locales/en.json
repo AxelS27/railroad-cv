@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "App",
+    "tagline": "Build something people love."
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "signIn": "Sign in"
+  },
+  "actions": {
+    "getStarted": "Get started",
+    "learnMore": "Learn more",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
+  },
+  "states": {
+    "loading": "Loading",
+    "empty": "Nothing here yet",
+    "error": "Something went wrong. Please try again."
+  }
+}

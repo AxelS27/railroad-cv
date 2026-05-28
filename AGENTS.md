@@ -1,0 +1,125 @@
+# AGENTS.md
+
+> Primary instruction file for all AI agents (Claude Code, Codex, Cursor, Windsurf).
+> Read this fully. It is self-contained for daily work. Only open `docs/` when a task needs that specific detail.
+
+## Source of Truth Hierarchy
+
+When sources conflict, follow this order (top wins):
+
+1. **AGENTS.md** (this file) — workflow & rules
+2. **docs/ARCHITECTURE.md** — structure & boundaries
+3. **docs/DECISIONS.md** — locked technical choices
+4. **docs/API.md** — API contracts
+5. Existing code patterns
+6. Your own judgment
+
+Never override a higher source with a lower one without flagging it.
+
+## When to Open Each Doc (don't read preemptively — saves tokens)
+
+| Open this | Only when the task involves |
+|-----------|----------------------------|
+| docs/PRD.md | Scope/feature questions, "should we build X" |
+| docs/ARCHITECTURE.md | Adding folders, cross-package imports, new module |
+| docs/FRONTEND.md | Any apps/web UI work — rendering, data fetching, performance, design/UX |
+| docs/DECISIONS.md | Choosing a lib, DB, pattern (check if already decided) |
+| docs/API.md | Any endpoint work |
+| docs/QUALITY.md | Before marking a task done |
+
+## Tech Stack (locked)
+
+Rationale lives in `docs/DECISIONS.md`. Don't introduce an alternative to any of these without a new ADR.
+
+| Layer | Choice |
+|-------|--------|
+| Monorepo | pnpm · Turborepo · TypeScript |
+| Frontend | Next.js (App Router) · React · Tailwind CSS · shadcn/ui |
+| Backend | Node.js · Hono · Zod (validation) |
+| Database | Supabase — PostgreSQL |
+| Auth | Supabase Auth |
+| Storage | Supabase Storage |
+| Deploy | Vercel (Docker optional) |
+| Large AI models | Hugging Face — **only** when the project involves large models |
+
+Stack rules:
+- Shared request/response **contracts are Zod schemas in `packages/types`**; infer TS types from them so web + server can't drift.
+- Supabase: the anon key is public (`NEXT_PUBLIC_*`); the **service-role key is server-only** — never import it into `apps/web`.
+- Large AI models are **never bundled** into the app — call Hugging Face (Inference API / Endpoints) from `apps/server`.
+- Custom model handoff lives in root `huggingface/`. Put model weights/checkpoints under `huggingface/models/` or exported artifacts under `huggingface/artifacts/`; those files are ignored for normal GitHub pushes.
+
+## Workflow
+
+1. Confirm which app/package you're touching: `apps/web`, `apps/server`, or `packages/*`.
+2. Match existing patterns in that folder before inventing new ones.
+3. Shared logic goes in `packages/` — never duplicate across apps.
+4. Finish → self-check against `docs/QUALITY.md` Definition of Done.
+5. Made a real architectural choice → append to `docs/DECISIONS.md`.
+
+## Running & Verifying
+
+| Action | Command |
+|--------|---------|
+| Install | `pnpm install` |
+| Dev (all) | `pnpm dev` |
+| Dev one app | `pnpm --filter @repo/web dev` · `pnpm --filter @repo/server dev` |
+| Lint | `pnpm lint` |
+| Typecheck | `pnpm typecheck` |
+| Test | `pnpm test` |
+| Format | `pnpm format` |
+
+Before marking a task done, run `pnpm lint && pnpm typecheck && pnpm test` and check the Definition of Done in `docs/QUALITY.md`.
+
+## Git & Tooling Hygiene
+
+Keep the public repo looking human-authored.
+
+- **Commits:** short and concise, one line, imperative mood. No long bodies, no multi-paragraph messages.
+- **No AI references** in commits, PR text, or history. Never mention Claude/Codex/agents, `.claude`, `.codex`, "generated with", or co-author trailers.
+- **Keep AI scaffolding out of the remote.** These are git-ignored on purpose and must never be pushed: `.claude/`, `.codex/`, `AGENTS.md`, `CLAUDE.md`, `docs/`, `HOW_TO_USE_THIS_TEMPLATE.md`.
+- **Python:** use **`uv`** for deps / venv / running scripts, never `pip` or raw `venv`.
+
+## Architecture Discipline
+
+- **`apps/web`** = frontend only. **`apps/server`** = backend only. No crossing.
+- **`packages/`** = shared, reusable, app-agnostic code:
+  - `packages/ui` — design system / shared components
+  - `packages/types` — shared TypeScript types
+  - `packages/utils` — pure, framework-agnostic helpers
+  - `packages/config` — shared configs (tsconfig, eslint, etc.)
+- **`huggingface/`** = optional Hugging Face handoff workspace for model cards, Space files, and upload-ready assets. It is not a web/server/package runtime.
+- **Feature-based**: group by feature, not by file type. A feature owns its components, hooks, services, and types.
+- **Import boundaries**: apps import from `packages/*`. Packages NEVER import from apps. Features never import from sibling features directly — go through a shared layer.
+
+## Anti-Overengineering Rules
+
+- Don't add abstraction until used **3+ times**. Two usages = copy-paste is fine.
+- No barrel `index.ts` re-exports unless it removes real import noise.
+- No new dependency if stdlib / existing dep covers it. If you add one, log it in DECISIONS.md.
+- No premature generics, no "future-proof" config nobody asked for.
+- Delete dead code immediately. Don't comment it out.
+
+## Consistency Rules
+
+- Naming: `kebab-case` files, `PascalCase` components, `camelCase` functions/vars, `SCREAMING_SNAKE_CASE` constants.
+- One responsibility per file. If a file does two things, split it.
+- Co-locate tests next to source: `thing.ts` + `thing.test.ts`.
+- Types live with their feature; only truly shared types go to `packages/types`.
+
+## DO
+
+- ✅ Reuse from `packages/` before writing new code
+- ✅ Keep frontend/backend boundaries clean
+- ✅ Match the naming + folder conventions exactly
+- ✅ Update the relevant doc when you change its domain
+- ✅ Ask before introducing a new top-level folder
+- ✅ If `docs/PRD.md` is still a blank template, ask the user for scope before building features — don't invent it
+
+## DON'T
+
+- ❌ Duplicate logic across `apps/web` and `apps/server`
+- ❌ Import app code into a package
+- ❌ Add a state manager / ORM / heavy lib without a DECISIONS.md entry
+- ❌ Restructure folders without updating ARCHITECTURE.md
+- ❌ Leave `.env` secrets in code or commit `.env`
+- ❌ Read all docs at session start — open them on demand only

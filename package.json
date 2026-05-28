@@ -1,0 +1,22 @@
+{
+  "name": "liem-monorepo-template",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md}\""
+  },
+  "prettier": "@repo/config/prettier",
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "prettier": "^3.3.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
+  }
+}
