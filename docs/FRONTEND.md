@@ -28,6 +28,8 @@ Do not use:
 - Fake dashboard aesthetics, Dribbble-style visual overload, experimental layouts with no UX purpose.
 - Fade-in-on-everything motion, gratuitous parallax, constantly moving elements.
 - Generic portfolio aesthetics: tiny centered labels, decorative rules, large type paired with thin filler copy, and vague skill cards.
+- Split or two-column heroes with one side mostly empty: a small card or single element floating in a large blank or tinted panel. Splitting the screen relocates empty space, it does not remove it.
+- Sections stretched to viewport height (`min-h-screen` / `100vh`) with sparse, vertically centered content, leaving large empty bands above and below.
 
 ### Do instead
 
@@ -35,6 +37,7 @@ Do not use:
 - **Customize components.** shadcn/ui is a starting point, not the look. Tune radius, weight, density, and color so it does not read as "default shadcn."
 - **Keep typography stable.** One or two font families at most. No random font mixing, no decorative or serif-italic-for-aesthetics switches. Build hierarchy with spacing, weight, and size.
 - **Lay out with structure.** Use a proper responsive grid, strong alignment, and clear section flow. Whitespace should create hierarchy; it should not become dead empty space.
+- **Fill space with substance, not stretch.** If an area looks empty, add real content or tighten the layout. Do not manufacture fullness by stretching a section to full height or by splitting the screen and leaving half blank. A full-width hero with a substantial product visual, or a denser content-led hero, beats a split with an empty half.
 - **Use asymmetry intentionally.** Avoid centering every section. A page can feel balanced while using offset columns, editorial rhythm, and varied section density.
 - **Earn every effect.** Subtle, fast motion that supports usability. No heavy animation libs for a hover, no cinematic transitions. Users should notice smoothness, not the animation.
 - **Respect hierarchy and whitespace.** One clear focal point per screen, intentional alignment, generous spacing. Polish over decoration.
@@ -47,6 +50,34 @@ Do not use:
 - Keep borders, shadows, corner radius, and hover states restrained and consistent.
 - Test mobile and desktop for stable spacing, readable line lengths, and no awkward empty zones.
 - Prefer real product references and mature design systems over AI-generated landing page patterns.
+
+### Done gate (write this audit before you call any UI work finished)
+
+Reading this file is not the same as applying it. The most common failure is an agent that read these rules and still shipped a centered, half-empty hero. To force application, **before you mark any `apps/web` UI work done, write a short self-audit**: list each check below and mark it PASS or FAIL with a one-line reason. If you cannot judge a check from the code alone, build and run the app and look at the rendered page, do not guess. Any FAIL means it is not done; fix it and re-audit.
+
+**Layout (the failures that make a page read as AI-built):**
+- [ ] The hero is not a single centered column of stacked text. It has real structure: asymmetric columns, content next to a product preview, or a deliberate offset.
+- [ ] No section is "center everything" (eyebrow + heading + paragraph + button all stacked and centered). Centered text is a rare, deliberate exception, never the default for every section.
+- [ ] At a wide desktop width (~1440px) the page does not leave large dead side gutters. Content aligns to a defined container; background bands may run full-bleed, but content is never stranded in a narrow centered column with empty sides.
+- [ ] No section is a thin strip floating in a tall empty band. The "half a screen of content with a divider across the middle" look is a fail. Each section has intentional density.
+- [ ] A split or two-column layout passes only if both sides carry real weight. A small card or single element alone in a large blank or tinted half is a fail; the visual side must substantially fill its space.
+- [ ] No section is stretched to viewport height (`min-h-screen` / `100vh` / `100svh`) just to look full. Height comes from real content and deliberate spacing; a full-height section is fine only when its content genuinely fills it.
+- [ ] Spacing rhythm is consistent and deliberate, not random vertical gaps.
+
+**Content & identity:**
+- [ ] Every card, badge, stat, and panel carries real information or a real action. Nothing exists only to fill a grid.
+- [ ] Color comes from the tokens in `globals.css`. No default-shadcn look, no violet/indigo gradient, no glassmorphism/glow/blur as decoration.
+- [ ] One or two font families; hierarchy is built from size, weight, and spacing. No decorative serif-italic, no mixed heading colors.
+- [ ] Copy is plain and specific. No AI-marketing filler, no em dash, no decorative emoji, no `[01]`-style numbering.
+
+**Structure & states:**
+- [ ] Public pages have a navbar and a footer. No bare screen.
+- [ ] If the page uses section anchors, the navbar marks the active section (via `IntersectionObserver` + `aria-current`) and links smooth-scroll to it with an offset for the sticky navbar, all gated behind `prefers-reduced-motion`.
+- [ ] A new or changed view matches the shared scaffold of its sibling pages: page title, primary actions, and filters sit in the same place with the same alignment, same container, same spacing. No one-off per-page layout.
+- [ ] The layout adapts across breakpoints (behavior changes, not just scaled-down). Checked at mobile and desktop.
+- [ ] Empty, loading, and error states are designed, not just the happy path.
+
+Writing the audit is the point: it turns this list from something you read into something you applied. `pnpm lint && pnpm typecheck` passing does **not** cover any of the above, a build can be green and the page still AI-generic.
 
 ## App Structure & Page Flow
 
@@ -62,6 +93,29 @@ Every page ships with navigation chrome. There are two layouts:
 - **App layout** wraps signed-in routes: a persistent shell (top bar or sidebar) with the user menu and primary app navigation.
 
 **Do not ship a page with no navigation.** A bare screen with no navbar and no footer is the AI tell that there was no real information architecture behind it.
+
+### In-page navigation (anchor links)
+
+When a long page (e.g. the landing) is split into sections that the navbar or footer link to:
+
+- **Use real anchor links.** Each section has a stable `id`; navbar and footer links point to `#that-id`, and a footer "back to top" link targets the top of the page. Avoid JS click handlers that manually scroll.
+- **Show the active section.** The link for the section currently in view gets a restrained active state (a color or weight change, or a small underline drawn from the design tokens, never a flashy animated pill). Detect the visible section with `IntersectionObserver`, not scroll-event math, and set `aria-current` on the active link so it is not signalled by color alone.
+- **Smooth scroll, cheaply.** Enable it in global CSS (`scroll-behavior: smooth` on `html`). Do not add a scroll-hijacking library (Lenis, Locomotive, GSAP ScrollSmoother and friends): that is an over-engineered AI tell.
+- **Offset the sticky navbar.** Give linked sections `scroll-margin-top` (Tailwind `scroll-mt-*`) equal to the navbar height, so the heading is not hidden under the bar after a jump.
+- **Respect reduced motion.** Gate smooth scroll and any transition behind `@media (prefers-reduced-motion: no-preference)`. A visitor who asks for less motion gets instant jumps, not animation.
+- **Keep the client boundary small.** Active-section tracking needs the client, so put it in a small `'use client'` nav component; do not turn the whole page client-rendered for it (see Rendering Strategy).
+
+This is the right kind of motion: subtle and functional, never cinematic. Keep it minimal (see "Do instead").
+
+### Consistent page layout
+
+Pages of the same kind must feel the same. Moving between two dashboard views, two list pages, or two detail pages, a visitor should see the same structure in the same places, with only the data changing. Inconsistent placement (one page centers its title, the next puts it to the side; one has filters on top, another on the left) is a clear "assembled screen by screen" tell.
+
+- **Share one page scaffold.** Build a reusable page-header primitive (title, optional description, a slot for primary actions) and a consistent content container, then compose every page from them. Decide once where the title sits and how it aligns; never re-decide per page.
+- **Same content type, same layout.** All list pages share a layout, all detail pages share a layout. Title, breadcrumbs, primary action, filters, tabs, and empty state land in predictable spots across the set.
+- **Persistent shell.** The app shell (sidebar or top bar, user menu, primary nav) stays mounted across navigation; only the content region swaps. Do not re-implement the shell per route.
+- **Reuse, do not re-style.** These pieces live in shared components (`packages/ui` or an app-level layout folder) and get reused. A one-off layout for a single page is where the drift starts.
+- **Consistent spacing and density.** Same page padding, same gap rhythm, same heading scale on every screen of the same type. That consistency is what reads as "designed by one team."
 
 ## Theming & Color
 

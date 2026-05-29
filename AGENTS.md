@@ -21,6 +21,7 @@ Never override a higher source with a lower one without flagging it.
 | Open this | Only when the task involves |
 |-----------|----------------------------|
 | docs/PRD.md | Scope/feature questions, "should we build X" |
+| docs/FEATURES.md | Building or scoping a specific feature module |
 | docs/ARCHITECTURE.md | Adding folders, cross-package imports, new module |
 | docs/FRONTEND.md | Any apps/web UI work - rendering, data fetching, performance, design/UX |
 | docs/DECISIONS.md | Choosing a lib, DB, pattern (check if already decided) |
@@ -71,7 +72,7 @@ Stack rules:
 | Test | `pnpm test` |
 | Format | `pnpm format` |
 
-Before marking a task done, run `pnpm lint && pnpm typecheck && pnpm test` and check the Definition of Done in `docs/QUALITY.md`.
+Before marking a task done, run `pnpm lint && pnpm typecheck && pnpm test` and check the Definition of Done in `docs/QUALITY.md`. For `apps/web` UI work, it is also not done until you have written the **Done gate** self-audit in `docs/FRONTEND.md` and every check passes. Green lint/typecheck does not catch an AI-generic layout.
 
 ## Git & Tooling Hygiene
 
