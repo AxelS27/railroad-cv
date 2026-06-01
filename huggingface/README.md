@@ -1,3 +1,10 @@
+---
+title: Railroad CV API
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Railroad CV Hugging Face API
 
 Docker Space backend for the Railroad CV website.
