@@ -2,7 +2,7 @@ import type { DetectModelType, DetectResponse } from '@repo/types'
 
 export type { DetectModelType, DetectResponse } from '@repo/types'
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:4000/api/v1'
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000/api/v1'
 
 type ApiEnvelope = {
   data?: DetectResponse

@@ -17,7 +17,7 @@ export const noAppImports = {
 };
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/.next/**', '**/.turbo/**', '**/node_modules/**'] },
+  { ignores: ['**/dist/**', '**/.next/**', '**/.turbo/**', '**/out/**', '**/node_modules/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

@@ -9,6 +9,7 @@ dist/
 coverage/
 
 .next/
+out/
 *.tsbuildinfo
 
 /huggingface/models/**
