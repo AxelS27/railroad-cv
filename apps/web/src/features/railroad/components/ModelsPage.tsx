@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'
+import HowItWorks from './HowItWorks'
+import PreprocessingViz from './PreprocessingViz'
 
 const models = [
   {
@@ -69,6 +71,9 @@ export default function ModelsPage() {
           ))}
         </div>
       </div>
+
+      <HowItWorks />
+      <PreprocessingViz />
     </motion.div>
   )
 }

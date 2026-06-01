@@ -3,8 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import DetectorForm from './DetectorForm'
 import ResultDisplay from './ResultDisplay'
 import TrainScene from './TrainScene'
-import HowItWorks from './HowItWorks'
-import PreprocessingViz from './PreprocessingViz'
 import type { DetectResponse } from '../services/api'
 
 export default function Hero() {
@@ -100,8 +98,6 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
-      <HowItWorks />
-      <PreprocessingViz />
     </>
   )
 }
