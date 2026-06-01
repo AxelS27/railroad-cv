@@ -10,8 +10,8 @@ const steps = [
   },
   {
     icon: ScanEye,
-    title: 'Choose Detection Model',
-    desc: 'Run either the deep learning detector or the classic ML pipeline on the uploaded frame.',
+    title: 'Run Classic ML',
+    desc: 'The classic ML pipeline extracts computer vision features from the uploaded frame.',
     color: 'var(--accent)',
   },
   {
