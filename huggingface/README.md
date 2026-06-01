@@ -1,26 +1,81 @@
-# Hugging Face Workspace
+# Railroad CV Hugging Face API
 
-Use this folder as the handoff area for custom AI models that will be uploaded to Hugging Face Hub or used in a Hugging Face Space.
+Docker Space backend for the Railroad CV website.
 
-This folder is separate from the app runtime:
+## Required Model Files
 
-- `apps/web` never imports model files.
-- `apps/server` calls hosted models through Hugging Face APIs or endpoints.
-- Large model files stay out of normal GitHub commits.
-
-## Suggested Layout
+Upload these files into the Space under `models/`:
 
 ```text
-huggingface/
-  README.md          Model card or Space documentation
-  app.py             Optional Space entrypoint
-  requirements.txt   Python runtime dependencies for a Space
-  artifacts/         Export outputs, ignored by GitHub
-  models/            Model weights/checkpoints, ignored by GitHub
+models/
+  best_model.pkl  # classic ML bundle from model-compvis/outputs_clean/best_model.pkl
+  best.pt         # deep learning YOLO weights from obstacle-detection
 ```
 
-## Upload Notes
+The `models/` folder is ignored in GitHub, so model weights stay out of the web repo.
 
-Keep large files in `models/` or `artifacts/`. The template ignore rules in `#.gitignore` exclude those paths once the file is renamed to `.gitignore` in a product repo.
+## Space Settings
 
-When a model is ready, upload it through the Hugging Face CLI, Git LFS, or the Hugging Face web UI from this folder.
+Create a new Hugging Face Space with:
+
+```text
+SDK: Docker
+Root directory: huggingface
+```
+
+After the Space is running, test:
+
+```bash
+curl https://<username>-<space-name>.hf.space/api/v1/health
+```
+
+Expected shape:
+
+```json
+{
+  "data": {
+    "status": "ok",
+    "classic_ml_model": true,
+    "deep_learning_model": true
+  }
+}
+```
+
+## Website Environment
+
+In Vercel, set:
+
+```text
+NEXT_PUBLIC_API_BASE_URL=https://<username>-<space-name>.hf.space/api/v1
+```
+
+Remove or ignore the old `VITE_API_URL`. The Next.js frontend only needs `NEXT_PUBLIC_API_BASE_URL`.
+
+## API Contract
+
+```http
+POST /api/v1/detect
+Content-Type: multipart/form-data
+
+file=<image>
+modelType=classic_ml | deep_learning
+```
+
+Response:
+
+```json
+{
+  "data": {
+    "job_id": "uuid",
+    "filename": "crossing.jpg",
+    "model_type": "classic_ml",
+    "model_name": "Classic CV RBF SVM",
+    "status": "SAFE",
+    "reason": "RBF SVM classified the frame as safe.",
+    "latency_ms": 42.1,
+    "kind": "image",
+    "detections": [],
+    "preprocessing": []
+  }
+}
+```
