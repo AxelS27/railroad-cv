@@ -108,3 +108,17 @@
 - Rejected:   A separate auth provider such as Auth0/Clerk (more moving parts; ADR-005 already chose Supabase); storing avatars as base64 in Postgres or on a third-party CDN (Storage already exists and supports RLS).
 - Status:     Accepted
 - Date:       2026-05-29
+
+## ADR-014: Frontend animation/icon parity for Railroad CV port
+- Decision:   `apps/web` may use `framer-motion` and `lucide-react` for the Railroad CV frontend port.
+- Reason:     The old Railroad CV frontend already used these libraries for page transitions, scroll-driven visuals, and upload/status icons. Keeping them preserves visual parity while moving the code into the current Next.js project structure.
+- Rejected:   Rebuilding all animation and icon behavior by hand in CSS/SVG for this port (higher drift from the existing site).
+- Status:     Accepted
+- Date:       2026-05-30
+
+## ADR-015: Local Python inference workers for Railroad CV
+- Decision:   `apps/server` serves `/api/v1/detect` and calls local Python worker scripts for the deep learning detector and classic ML classifier. The browser uploads an image and chooses `deep_learning` or `classic_ml`; the server returns only the verdict payload.
+- Reason:     The existing model artifacts and preprocessing code already live in local Python projects. Calling them from the Hono server keeps model files out of `apps/web`, preserves frontend/backend boundaries, and avoids a Hugging Face dependency for this prototype.
+- Rejected:   Bundling model artifacts in the Next.js app (breaks boundary and bloats the client); returning annotated media by default (the current UI needs a direct verdict only).
+- Status:     Accepted
+- Date:       2026-06-01

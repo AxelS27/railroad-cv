@@ -9,7 +9,7 @@
 ## UI Consistency
 - Frontend rendering, performance & design-craft rules: see `docs/FRONTEND.md`. The bar is "professionally designed, human-made" - never AI-generic. UI work is not done until its **Done gate** self-audit passes.
 - Use shared UI primitives and design tokens before creating one-off styles.
-- Test responsive behavior at mobile and desktop widths.
+- Test responsive behavior at mobile and desktop widths. For public/landing pages, inspect every major section and section transition at 1366x768, 1440x900, and 1920x1080 so hard mid-screen dividers, stacked page slices, half-empty sections, and prematurely visible footers cannot slip through.
 
 ## Performance Basics
 - No unnecessary re-renders (memoize where it measurably helps, not preemptively).
@@ -29,7 +29,7 @@ A task is done when:
 - [ ] Works as specified in PRD / task
 - [ ] Tests written and passing (logic + edge cases)
 - [ ] Lint + typecheck clean
-- [ ] UI work: the **Done gate** self-audit in `docs/FRONTEND.md` is written and every check passes
+- [ ] UI work: the **Done gate** self-audit in `docs/FRONTEND.md` is written from rendered viewport checks and every check passes
 - [ ] Matches naming & folder conventions (ARCHITECTURE.md)
 - [ ] API matches `docs/API.md` (if applicable)
 - [ ] Relevant doc updated if its domain changed

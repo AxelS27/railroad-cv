@@ -1,1 +1,8 @@
-export { default } from '@repo/config/eslint/next';
+import next from '@repo/config/eslint/next';
+
+export default [
+  ...next,
+  {
+    ignores: ['next-env.d.ts'],
+  },
+];

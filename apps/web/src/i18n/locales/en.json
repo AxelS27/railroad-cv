@@ -1,24 +1,51 @@
 {
   "app": {
-    "name": "App",
-    "tagline": "Build something people love."
+    "name": "Railroad CV",
+    "tagline": "Railway crossing obstacle detection"
   },
   "nav": {
     "home": "Home",
-    "features": "Features",
-    "pricing": "Pricing",
-    "signIn": "Sign in"
+    "model": "Model",
+    "about": "About",
+    "source": "Source"
   },
-  "actions": {
-    "getStarted": "Get started",
-    "learnMore": "Learn more",
-    "cancel": "Cancel",
-    "save": "Save",
-    "delete": "Delete"
+  "hero": {
+    "title": "Railway crossing obstacle detection",
+    "copy": "Upload a crossing frame in the detector panel. It returns a clear safety verdict for the track area.",
+    "capabilities": {
+      "barrier": "Checks barrier state",
+      "obstacle": "Flags track obstacles"
+    }
   },
-  "states": {
-    "loading": "Loading",
-    "empty": "Nothing here yet",
-    "error": "Something went wrong. Please try again."
+  "detector": {
+    "title": "Track detector",
+    "idle": "Awaiting analysis",
+    "drop": "Drop image here",
+    "choose": "Choose an image",
+    "hint": "JPG, PNG, or WEBP",
+    "analyzing": "Analyzing frame",
+    "replace": "Replace image",
+    "safe": "SAFE",
+    "danger": "DANGER",
+    "safeReason": "No obstacle detected on the track area.",
+    "dangerReason": "Obstacle detected while the crossing area needs attention."
+  },
+  "model": {
+    "title": "Model notes",
+    "copy": "Technical details stay here instead of cluttering the first view.",
+    "metrics": [
+      { "label": "Input", "value": "Image frame" },
+      { "label": "Classes", "value": "Barrier and obstacle" },
+      { "label": "Output", "value": "Safety verdict" }
+    ]
+  },
+  "about": {
+    "title": "Detection rules",
+    "copy": "The frontend currently demonstrates the core flow with local state. Backend inference can be added later without changing the page structure.",
+    "rules": [
+      "An obstacle on the track returns a danger verdict.",
+      "A clear track returns a safe verdict.",
+      "The upload card is the only entry point for image analysis."
+    ]
   }
 }

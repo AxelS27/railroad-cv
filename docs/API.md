@@ -55,6 +55,54 @@ Authorization: Bearer <token>
 
 ---
 
+## Detection Endpoint
+
+### `POST /api/v1/detect`
+Analyze one uploaded crossing image with either the deep learning detector or the classic ML classifier.
+
+**Request**
+```
+POST /api/v1/detect
+Content-Type: multipart/form-data
+```
+
+Fields:
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `file` | File | Yes | Image only: JPG, PNG, WEBP, or BMP |
+| `modelType` | String | No | `classic_ml` or `deep_learning`; defaults to `classic_ml` |
+
+**Response - 200**
+```json
+{
+  "data": {
+    "job_id": "uuid",
+    "filename": "crossing.jpg",
+    "model_type": "classic_ml",
+    "model_name": "Classic CV RBF SVM",
+    "status": "SAFE",
+    "reason": "RBF SVM classified the frame as safe.",
+    "latency_ms": 31.4,
+    "kind": "image",
+    "confidence": 0.82,
+    "detections": [],
+    "preprocessing": [
+      { "name": "Resize", "description": "Image resized to 128x128 for feature extraction." }
+    ]
+  }
+}
+```
+
+The endpoint returns a direct verdict only. It does not return annotated image output.
+
+**Response - 400**
+```json
+{ "error": { "code": "UNSUPPORTED_FILE", "message": "Use a JPG, PNG, WEBP, or BMP image." } }
+```
+
+---
+
 ## Consistency Rules
 
 - Resource names plural, lowercase: `/users`, `/orders`.
