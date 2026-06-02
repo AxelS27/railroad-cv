@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import AboutPage from './components/AboutPage';
@@ -14,6 +14,12 @@ type Page = 'home' | 'models' | 'about';
 
 export function RailroadApp() {
   const [page, setPage] = useState<Page>('home');
+  const contentScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    contentScrollRef.current?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [page]);
 
   return (
     <div className="App">
@@ -25,7 +31,7 @@ export function RailroadApp() {
 
       <Navbar active={page} onChange={setPage} />
 
-      <div className="content-scroll">
+      <div className="content-scroll" ref={contentScrollRef}>
         <div className="sticky-viewport-manager">
           <main className="page-wrapper">
             <AnimatePresence mode="wait">
