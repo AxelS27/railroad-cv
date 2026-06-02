@@ -15,7 +15,7 @@ Upload these files into the Space under `models/`:
 
 ```text
 models/
-  best_model.pkl  # classic ML bundle from model-compvis/outputs_clean/best_model.pkl
+  best_model.pkl  # classic ML bundle from model-compvis/outputs_final/best_model.pkl
   best.pt         # deep learning YOLO weights from obstacle-detection
 ```
 
@@ -76,9 +76,9 @@ Response:
     "job_id": "uuid",
     "filename": "crossing.jpg",
     "model_type": "classic_ml",
-    "model_name": "Classic CV RBF SVM",
+    "model_name": "Classic CV Hist Gradient Boosting",
     "status": "SAFE",
-    "reason": "RBF SVM classified the frame as safe.",
+    "reason": "Hist Gradient Boosting classified the frame as safe.",
     "latency_ms": 42.1,
     "kind": "image",
     "detections": [],

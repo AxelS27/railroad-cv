@@ -23,6 +23,7 @@ MODELS_DIR = ROOT / "models"
 CLASSIC_MODEL_PATH = MODELS_DIR / "best_model.pkl"
 DL_MODEL_PATH = MODELS_DIR / "best.pt"
 CONF_THRESHOLD = 0.4
+CLASSIC_MODEL_ARTIFACT = "model-compvis/outputs_final/best_model.pkl"
 
 DetectModelType = Literal["classic_ml", "deep_learning"]
 
@@ -88,6 +89,7 @@ def health():
         "data": {
             "status": "ok",
             "classic_ml_model": CLASSIC_MODEL_PATH.exists(),
+            "classic_ml_artifact": CLASSIC_MODEL_ARTIFACT,
             "deep_learning_model": DL_MODEL_PATH.exists(),
         }
     }
@@ -131,7 +133,13 @@ def run_classic_ml(image_path: Path, filename: str) -> DetectResponse:
         )
 
     if classic_bundle is None:
-        classic_bundle = joblib.load(CLASSIC_MODEL_PATH)
+        try:
+            classic_bundle = joblib.load(CLASSIC_MODEL_PATH)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Classic ML model could not be loaded: {exc}",
+            ) from exc
 
     model = classic_bundle["model"]
     metadata = classic_bundle.get("metadata", {})

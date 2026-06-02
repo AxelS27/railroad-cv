@@ -38,7 +38,7 @@ const modelConfig: Record<DetectModelType, {
     args: [
       '--model',
       process.env.ML_MODEL_PATH
-        ?? 'D:\\Binus-Projects\\model-compvis\\outputs_clean\\best_model.pkl',
+        ?? 'D:\\Binus-Projects\\model-compvis\\outputs_final\\best_model.pkl',
       '--project-root',
       process.env.ML_PROJECT_ROOT ?? 'D:\\Binus-Projects\\model-compvis',
     ],

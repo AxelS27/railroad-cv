@@ -15,7 +15,7 @@ export default function ModelsPage() {
         </h2>
         <p className="section-subtitle">
           The model page documents the classic computer vision pipeline used by the
-          selected RBF SVM classifier.
+          selected Hist Gradient Boosting classifier.
         </p>
       </div>
 
@@ -25,7 +25,7 @@ export default function ModelsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.08 }}
       >
-        <div className="metric-card-label">Computer vision feature extraction with the selected RBF SVM</div>
+        <div className="metric-card-label">Computer vision feature extraction with the selected Hist Gradient Boosting model</div>
         <div className="metric-card-value accent">Classic ML</div>
         <p>Direct SAFE or DANGER image classification.</p>
       </motion.div>

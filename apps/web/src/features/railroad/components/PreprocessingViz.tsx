@@ -87,7 +87,7 @@ const steps = [
     details: [
       'Thresholds 80 and 160',
       'Edge count divided by image area',
-      'Ready for outputs_clean/best_model.pkl',
+      'Ready for outputs_final/best_model.pkl',
     ],
   },
 ]
