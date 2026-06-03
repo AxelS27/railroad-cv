@@ -85,18 +85,6 @@ export default function ResultDisplay({ result, loading }: Props) {
                   This model returns a direct image verdict instead of object boxes.
                 </div>
               )}
-            </div>
-
-            <div>
-              <h4 className="card-title" style={{ marginBottom: 12 }}>Preprocessing</h4>
-              <div className="preprocess-list">
-                {result.preprocessing.map((step) => (
-                  <div className="preprocess-row" key={step.name}>
-                    <span className="preprocess-name">{step.name}</span>
-                    <span className="preprocess-description">{step.description}</span>
-                  </div>
-                ))}
-              </div>
               {typeof result.confidence === 'number' && (
                 <div className="model-confidence">
                   Confidence {(result.confidence * 100).toFixed(1)}%
