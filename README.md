@@ -1,214 +1,65 @@
 # Railroad CV
 
-Railroad CV is a railway level-crossing safety demo that analyzes an uploaded crossing frame and returns a direct `SAFE` or `DANGER` verdict.
+Railroad CV is a Computer Vision project for railway level-crossing safety. The website analyzes a crossing image and returns a clear `SAFE` or `DANGER` verdict.
 
-**Website:** [railroadcv.vercel.app](https://railroadcv.vercel.app)  
-**Inference API:** [axels27-railroad-cv-api.hf.space](https://axels27-railroad-cv-api.hf.space)
+**Live Website:** [railroadcv.vercel.app](https://railroadcv.vercel.app)
 
 <img src="apps/web/src/app/icon.png" alt="Railroad CV icon" width="120" />
 
 ## Overview
 
-The project is built for a Computer Vision assignment around obstacle detection at railway crossings. Users upload an image from a crossing scene, choose a model, and receive a clear safety verdict.
+Railway crossings are high-risk areas where blocked tracks, closed barriers, and vehicle queues can quickly become dangerous. Railroad CV explores how image-based computer vision can help identify unsafe crossing conditions from a single uploaded frame.
 
-The frontend is intentionally simple: upload frame, choose model, inspect result. The model and preprocessing explanation live on the Model page so the Home page stays focused on inference.
+The website keeps the experience simple: users upload a crossing image, choose a model, and receive a direct safety result. The goal is not to overwhelm users with raw model output, but to turn visual analysis into a readable decision.
 
-## Highlights
+## What The Website Does
 
-- Image upload flow for railway crossing frames.
-- Two inference modes: Classic ML and Deep Learning.
-- Classic ML is the default model option.
-- Direct `SAFE` or `DANGER` result instead of noisy technical output.
-- Model page documents the computer vision preprocessing pipeline.
-- Hugging Face Space backend for hosted inference.
-- Vercel static deployment for the web app.
+- Accepts railway crossing images.
+- Lets users compare a Classic ML model and a Deep Learning model.
+- Returns a direct `SAFE` or `DANGER` result.
+- Shows a short explanation for the prediction.
+- Provides a dedicated Model page for the image processing flow.
+- Uses a railway-themed interface based on the original Railroad CV concept.
 
-## Model Pipeline
+## Computer Vision Focus
+
+This project focuses on the full image analysis flow:
+
+1. A railway crossing frame is uploaded.
+2. The image is processed by the selected model.
+3. The model identifies whether the scene is safe or dangerous.
+4. The result is shown as a simple safety verdict.
+
+The Model page presents the classic image processing stages visually, so the preprocessing flow can be understood without reading code.
+
+## Model Options
 
 ### Classic ML
 
-The selected classic model is **Hist Gradient Boosting**.
+The Classic ML option is the default model. It uses a traditional computer vision pipeline and a trained classifier to decide whether the image should be labeled `SAFE` or `DANGER`.
 
-Classic ML preprocessing:
-
-1. Resize image to `128 x 128`.
-2. Convert image to grayscale and HSV.
-3. Extract HOG shape features.
-4. Extract HSV color histograms.
-5. Extract uniform LBP texture features.
-6. Extract Canny edge density.
-7. Concatenate the feature vector.
-8. Classify the frame as `SAFE` or `DANGER`.
-
-The current model artifact comes from:
-
-```text
-D:\Binus-Projects\model-compvis\outputs_final\best_model.pkl
-```
+This model is useful for explaining how handcrafted visual features can still support image classification tasks.
 
 ### Deep Learning
 
-The deep learning model uses YOLO-style object detection from:
+The Deep Learning option uses an object detection approach. It looks for important crossing-related objects such as barriers and obstacles, then converts the detections into a safety verdict.
 
-```text
-D:\Binus-Projects\obstacle-detection\website\backend\models\best.pt
-```
+This model is useful for showing how detection-based systems can reason from visible objects in the scene.
 
-Detected classes are converted into a safety verdict:
+## Result Meaning
 
-- `barrier_open` -> `SAFE`
-- `barrier_closed` + `obstacle` -> `DANGER`
-- `barrier_closed` without obstacle -> `SAFE`
-- no significant detection -> `SAFE`
+`SAFE` means the uploaded frame does not indicate a dangerous crossing condition based on the selected model.
 
-## Tech Stack
+`DANGER` means the uploaded frame indicates a possible unsafe condition, such as an obstacle or blocked crossing situation.
 
-- **Monorepo:** pnpm, Turborepo, TypeScript
-- **Frontend:** Next.js App Router, React, Tailwind CSS
-- **Backend:** Hono for local API structure, FastAPI for Hugging Face Space
-- **Validation:** Zod shared contracts in `packages/types`
-- **Deployment:** Vercel for web, Hugging Face Space for inference
+The result is designed to be direct because the main use case is safety monitoring, where the output needs to be readable quickly.
 
-## Project Structure
+## Project Pages
 
-```text
-apps/
-  web/        Next.js frontend
-  server/     Local Hono API wrapper
-packages/
-  types/      Shared Zod schemas and TypeScript types
-  ui/         Shared UI package
-  utils/      Shared utilities
-huggingface/  Docker Space API and model handoff workspace
-code/         Notebook used for project work
-test_images.zip
-```
-
-## API Contract
-
-The hosted API accepts multipart image uploads:
-
-```http
-POST /api/v1/detect
-Content-Type: multipart/form-data
-
-file=<image>
-modelType=classic_ml | deep_learning
-```
-
-Example response:
-
-```json
-{
-  "data": {
-    "job_id": "uuid",
-    "filename": "crossing.jpg",
-    "model_type": "classic_ml",
-    "model_name": "Classic CV Hist Gradient Boosting",
-    "status": "SAFE",
-    "reason": "Hist Gradient Boosting classified the frame as safe.",
-    "latency_ms": 46.9,
-    "kind": "image",
-    "confidence": 0.999,
-    "detections": []
-  }
-}
-```
-
-Health check:
-
-```bash
-curl https://axels27-railroad-cv-api.hf.space/api/v1/health
-```
-
-## Getting Started
-
-Install dependencies:
-
-```bash
-pnpm install
-```
-
-Run the web app:
-
-```bash
-pnpm --filter @repo/web dev
-```
-
-Run the local server:
-
-```bash
-pnpm --filter @repo/server dev
-```
-
-Run everything through Turborepo:
-
-```bash
-pnpm dev
-```
-
-## Environment Variables
-
-For the frontend, set:
-
-```text
-NEXT_PUBLIC_API_BASE_URL=https://axels27-railroad-cv-api.hf.space/api/v1
-```
-
-In development, the frontend falls back to:
-
-```text
-http://localhost:4000/api/v1
-```
-
-In production, the app intentionally fails with a clear error if `NEXT_PUBLIC_API_BASE_URL` is not configured.
-
-## Hugging Face Space
-
-The `huggingface/` folder contains the Space runtime:
-
-```text
-huggingface/
-  app.py
-  cv_features.py
-  Dockerfile
-  requirements.txt
-  models/
-```
-
-Required model files inside the Space:
-
-```text
-models/
-  best_model.pkl
-  best.pt
-```
-
-The GitHub repo does not need to bundle large model weights for normal web deployment. The Space hosts the inference runtime and model files.
-
-## Verification
-
-Useful checks before deployment:
-
-```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm --filter @repo/web build
-```
-
-The Vercel build uses:
-
-```bash
-pnpm --filter @repo/web build
-```
-
-and exports static output from:
-
-```text
-apps/web/out
-```
+- **Home** - upload an image, choose a model, and view the analysis result.
+- **Model** - view the image processing and model explanation.
+- **About** - read the project context and purpose.
 
 ## Status
 
-Live demo with hosted inference. Classic ML currently uses Hist Gradient Boosting as the default model, while the deep learning option uses the YOLO detector artifact.
+Railroad CV is live as a project demo. The current version focuses on image upload, model selection, visual explanation, and direct crossing safety prediction.
